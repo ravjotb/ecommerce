@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const passport= require('passport');
 const { postRegister } = require('../controllers/index');
+const { errorHandler } = require('../middleware/index');
 /* GET home page. */
 router.get('/', (req, res, next)=> {
   res.render('index', { title: 'Surf Shop - Home' });
@@ -12,7 +14,7 @@ router.get('/register', (req, res, next)=>{
 });
 
 /* POST /register */
-router.post('/register', postRegister);
+router.post('/register', errorHandler(postRegister));
 
 /* GET /login */
 router.get('/login', (req, res, next)=> {
@@ -20,9 +22,14 @@ router.get('/login', (req, res, next)=> {
 });
 
 /* POST /login */
-router.post('/login', (req, res, next)=> {
-  res.send('POST /login');
-});
+router.post('/login', passport.authenticate('local',
+  {successRedirect: '/', failureRedirect: '/login'}));
+
+/* GET /logout */
+router.get('/logout', (req, res, next) =>{
+  req.logout();
+  res.redirect('/');
+})
 
 /* GET /profile */
 router.get('/profile', (req, res, next)=>{
