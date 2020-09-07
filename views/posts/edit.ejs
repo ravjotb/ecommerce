@@ -1,11 +1,22 @@
 <h1>Edit Post!</h1>
 
-<form class="" action="/posts/<%=post.id%>?_method=put" method="post">
+<form class="" action="/posts/<%=post.id%>?_method=put" method="post" id="postEditForm" enctype="multipart/form-data">
   <div class="">
     <input type="text" name="post[title]" value="<%= post.title %>" placeholder="Title">
   </div>
   <div class="">
     <input type="text" name="post[price]" value="<%= post.price %>" placeholder="Price">
+  </div>
+  <div class="">
+    <input type="file" id="imageUpload" name="images" accept= "images/*" multiple>
+    <div>
+      <% post.images.forEach(function(image, i){ %>
+        <img src="<%= image.url %>" alt="" width="150px">
+        <label for="image<%=i%>">Delete?</label>
+        <input type="checkbox" name="deleteImages[]" class="imageDeleteCheckbox" id="image<%=i%>"
+        value="<%=image.public_id%>">
+      <%});%>
+    </div>
   </div>
   <div class="">
     <textarea name="post[description]" placeholder="Description"><%= post.description%></textarea>
@@ -16,3 +27,31 @@
   <input type="submit">
 
 </form>
+
+<script>
+  let postEditForm= document.getElementById('postEditForm');
+
+  //add submit lsitener to the post edit form
+  postEditForm.addEventListener('submit', function(event){
+    //find length of uploaded images
+    let imageUploads= document.getElementById('imageUpload');
+    imageUploads= imageUploads.files.length;
+
+    //find total number of existing images
+    let existingImgs= document.querySelectorAll('.imageDeleteCheckbox');
+    existingImgs= existingImgs.length;
+
+    //find total number of potential deletions
+    let imgDeletions= document.querySelectorAll('.imageDeleteCheckbox:checked');
+    imgDeletions= imgDeletions.length;
+
+    //figure out if the form can be submitted or not
+    let newTotal= existingImgs - imgDeletions + imageUploads;
+    if(newTotal >4){
+      event.preventDefault();
+      let removalAmt= newTotal-4;
+      alert(`You need to remove at least ${removalAmt} more image${removalAmt===1?' ':'s'}!`)
+    }
+  })
+
+</script>
