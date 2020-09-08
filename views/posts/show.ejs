@@ -1,20 +1,27 @@
+<% layout('layouts/post-show-layout') -%>
+
 <h1><%= post.title %></h1>
 <div>Price: <%= post.price %> </div>
 <div class=""><%= post.description %></div>
 <div class=""><%= post.location %></div>
+
+
 <div class="">
   <% post.images.forEach(function(image) { %>
-    <img src="<%= image.url %>" alt="Surfboard Image" width="200px">
+    <img src="<%= image.url %>" alt="Item Image" width="200px">
   <% }); %>
 </div>
+
+<div id='map' style='width: 600px; height: 300px;'></div>
+
 <div class="">
   <a href="/posts/<%=post.id%>/edit">
-    <button type="button" name="button">Edit Post</button>
+    <button type="button" name="button"> Edit Post </button>
   </a>
 </div>
+
 <div class="">
   <form class="" action="/posts/<%=post.id%>?_method=DELETE" method="post">
     <input type="submit" name="" value="Delete">
   </form>
-
 </div>

@@ -4,7 +4,7 @@ const { postRegister, postLogin, getLogout } = require('../controllers/index');
 const { asyncErrorHandler } = require('../middleware/index');
 /* GET home page. */
 router.get('/', (req, res, next)=> {
-  res.render('index', { title: 'Surf Shop - Home' });
+  res.render('index', { title: 'Marketplace- Home' });
 });
 
 /* GET /register  */
