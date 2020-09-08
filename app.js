@@ -10,17 +10,18 @@ const User = require('./models/user');
 const session= require('express-session');
 const mongoose= require('mongoose');
 const methodOverride= require('method-override');
-
+const seedPosts= require('./seeds');
+//seedPosts();
 
 //require routes
-const indexRouter = require('./routes/index');
-const postsRouter = require('./routes/posts');
-const reviewsRouter= require('./routes/reviews');
+const index = require('./routes/index');
+const posts = require('./routes/posts');
+const reviews= require('./routes/reviews');
 
 const app = express();
 
 //connect to database
-mongoose.connect('mongodb://localhost:27017/surf-shop-mapbox',{ useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/surf-shop',{ useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useCreateIndex', true);
 const db= mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -60,6 +61,10 @@ passport.deserializeUser(User.deserializeUser());
 
 //Set local variables middleware
 app.use(function(req, res, next) {
+  req.user= {
+    '_id': '5f570636648a32aef541a93a',
+    'username': 'rav' };
+  res.locals.currentUser = req.user;
   //set default page title
   res.locals.title= 'MarketPlace';
   //set success flash message
@@ -72,9 +77,9 @@ app.use(function(req, res, next) {
 })
 
 //Mount Routes
-app.use('/', indexRouter);
-app.use('/posts', postsRouter);
-app.use('/posts/:id/reviews', reviewsRouter);
+app.use('/', index);
+app.use('/posts', posts);
+app.use('/posts/:id/reviews', reviews);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
