@@ -9,6 +9,7 @@ cloudinary.config({
   api_key:'969674229555917',
   api_secret: process.env.CLOUDINARY_SECRET
 });
+
 module.exports = {
 	// Posts Index
 	async postIndex(req, res, next) {
@@ -27,13 +28,13 @@ module.exports = {
 	// Posts Create
 	async postCreate(req, res, next) {
 		req.body.post.images = [];
-		for(const file of req.files) {
-			let image = await cloudinary.v2.uploader.upload(file.path);
-			req.body.post.images.push({
-				url: image.secure_url,
-				public_id: image.public_id
-			});
-		}
+    for(const file of req.files) {
+    	let image = await cloudinary.v2.uploader.upload(file.path);
+    	req.body.post.images.push({
+    		url: image.secure_url,
+    		public_id: image.public_id
+    	});
+    }
 		let response = await geocodingClient
 		  .forwardGeocode({
 		    query: req.body.post.location,
@@ -89,14 +90,13 @@ module.exports = {
 		// check if there are any new images for upload
 		if(req.files) {
 			// upload images
-			for(const file of req.files) {
-				let image = await cloudinary.v2.uploader.upload(file.path);
-				// add images to post.images array
-				post.images.push({
-					url: image.secure_url,
-					public_id: image.public_id
-				});
-			}
+      for(const file of req.files) {
+      	let image = await cloudinary.v2.uploader.upload(file.path);
+      	req.body.post.images.push({
+      		url: image.secure_url,
+      		public_id: image.public_id
+      	});
+      }
 		}
 		// check if location was updated
 		if(req.body.post.location !== post.location) {
