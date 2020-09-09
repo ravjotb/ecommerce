@@ -1,4 +1,5 @@
 <% layout('layouts/post-show-layout') -%>
+<script src="https://kit.fontawesome.com/afb8d82910.js" crossorigin="anonymous"></script>
 <h1><%= post.title %></h1>
 <div>Price: <%= post.price %></div>
 <div><%= post.description %></div>
@@ -15,9 +16,10 @@
 	<%}
 	else {%>
 		<!-- display an empty star -->
-		<i class="fal fa-star"></i>
+		<i class="far fa-star"></i>
 	<%}
 }%>
+<%= `${post.avgRating} star${post.avgRating === 1 ? '' : 's'}` %> 
 </div>
 <div>
 	<% post.images.forEach(function(image) { %>
@@ -70,9 +72,10 @@
 <% if(review.author.equals(currentUser._id)) { %>
   <div>
     <button class="toggle-edit-form">Edit</button>
-    <form action="/posts/<%=post.id%>/reviews/<%=review.id%>?_method=PUT"
+    <form action="/posts/<%= post.id %>/reviews/<%= review.id %>?_method=PUT"
       method="POST" class="edit-review-form">
       <textarea name="review[body]" required><%=review.body%></textarea>
+
 			<fieldset class="starability-basic">
 		  <legend>Rating:</legend>
 			<button class="clear-rating" type="button" name="button">Clear Rating</button>
