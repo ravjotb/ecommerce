@@ -19,7 +19,7 @@
 		<i class="far fa-star"></i>
 	<%}
 }%>
-<%= `${post.avgRating} star${post.avgRating === 1 ? '' : 's'}` %> 
+<%= `${post.avgRating} star${post.avgRating === 1 ? '' : 's'}` %>
 </div>
 <div>
 	<% post.images.forEach(function(image) { %>
@@ -27,40 +27,44 @@
 	<% }); %>
 </div>
 <div id='map' style='width: 400px; height: 300px;'></div>
-<div>
-	<a href="/posts/<%= post.id %>/edit">
-		<button>Edit</button>
-	</a>
-</div>
-<div>
-	<form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
-		<input type="submit" value="Delete">
+<% if (currentUser && post.author.equals(currentUser._id)) {%>
+	<div>
+		<a href="/posts/<%= post.id %>/edit">
+			<button>Edit</button>
+		</a>
+	</div>
+	<div>
+		<form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+			<input type="submit" value="Delete">
+		</form>
+	</div>
+<%}%>
+
+<% if(currentUser) {%>
+	<h2>Create a Review</h2>
+	<form action="/posts/<%= post.id %>/reviews" method="POST">
+		<textarea name="review[body]" required></textarea>
+		<fieldset class="starability-basic">
+	  <legend>Rating:</legend>
+		<button class="clear-rating" type="button" name="button">Clear Rating</button>
+	  <input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+	  <input type="radio" id="rate1" name="review[rating]" value="1" />
+	  <label for="rate1" title="Terrible">1 star</label>
+	  <input type="radio" id="rate2" name="review[rating]" value="2" />
+	  <label for="rate2" title="Not good">2 stars</label>
+	  <input type="radio" id="rate3" name="review[rating]" value="3" />
+	  <label for="rate3" title="Average">3 stars</label>
+	  <input type="radio" id="rate4" name="review[rating]" value="4" />
+	  <label for="rate4" title="Very good">4 stars</label>
+	  <input type="radio" id="rate5" name="review[rating]" value="5" />
+	  <label for="rate5" title="Amazing">5 stars</label>
+	</fieldset>
+
+		<input type="submit">
 	</form>
-</div>
-
-
-<h2>Create a Review</h2>
-<form action="/posts/<%= post.id %>/reviews" method="POST">
-	<textarea name="review[body]" required></textarea>
-	<fieldset class="starability-basic">
-  <legend>Rating:</legend>
-	<button class="clear-rating" type="button" name="button">Clear Rating</button>
-  <input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
-  <input type="radio" id="rate1" name="review[rating]" value="1" />
-  <label for="rate1" title="Terrible">1 star</label>
-  <input type="radio" id="rate2" name="review[rating]" value="2" />
-  <label for="rate2" title="Not good">2 stars</label>
-  <input type="radio" id="rate3" name="review[rating]" value="3" />
-  <label for="rate3" title="Average">3 stars</label>
-  <input type="radio" id="rate4" name="review[rating]" value="4" />
-  <label for="rate4" title="Very good">4 stars</label>
-  <input type="radio" id="rate5" name="review[rating]" value="5" />
-  <label for="rate5" title="Amazing">5 stars</label>
-</fieldset>
-
-	<input type="submit">
-</form>
-
+<%} else {%>
+	<h2><a href="/login?returnTo=true">Create a Review</a></h2>
+<%}%>
 <h3>Reviews</h3>
 <!-- display all reviews -->
 <% post.reviews.forEach(function(review) { %>
@@ -69,7 +73,7 @@
 		<%= review.body %><br>
 		Rating: <%= review.rating %>
 	</div>
-<% if(review.author.equals(currentUser._id)) { %>
+<% if(currentUser && review.author.equals(currentUser._id)) { %>
   <div>
     <button class="toggle-edit-form">Edit</button>
     <form action="/posts/<%= post.id %>/reviews/<%= review.id %>?_method=PUT"

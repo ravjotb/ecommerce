@@ -7,7 +7,7 @@
     <input type="text" name="post[title]" value="<%= post.title %>" placeholder="Title">
   </div>
   <div class="">
-    <input type="text" name="post[price]" value="<%= post.price %>" placeholder="Price">
+    <input type="number" name="post[price]" step=".01" value="<%= post.price %>" placeholder="Price">
   </div>
   <div class="">
     <input type="file" id="imageUpload" name="images" accept= "images/*" multiple>
