@@ -3,7 +3,10 @@ const router = express.Router();
 const multer= require('multer');
 const {cloudinary, storage}= require('../cloudinary');
 const upload= multer({ storage: storage });
-const { landingPage, getRegister, postRegister, getLogin, postLogin, getLogout, getProfile, updateProfile } = require('../controllers');
+const { landingPage, getRegister, postRegister,
+        getLogin, postLogin, getLogout,
+        getProfile, updateProfile, getForgotPassword,
+        putForgotPassword, getReset, putReset} = require('../controllers');
 const { asyncErrorHandler, isLoggedIn, isValidPassword, changePassword } = require('../middleware/index');
 
 /* GET home/landing page. */
@@ -37,22 +40,14 @@ router.put('/profile', isLoggedIn,
 );
 
 /* GET /forgot */
-router.get('/forgot', (req, res, next)=>{
-  res.send('GET /forgot');
-});
+router.get('/forgot-password', getForgotPassword);
 
 /* PUT /forgot */
-router.put('/forgot', (req, res, next)=>{
-  res.send('PUT /forgot');
-});
+router.put('/forgot-password', asyncErrorHandler(putForgotPassword));
 
 /* GET /reset/:token */
-router.get('/reset/:token', (req, res, next)=>{
-  res.send('GET /reset/:token');
-});
+router.get('/reset/:token', asyncErrorHandler(getReset));
 
 /* PUT /reset/:token */
-router.put('/reset/:token', (req, res, next)=>{
-  res.send('PUT /reset/:token');
-});
+router.put('/reset/:token', asyncErrorHandler(putReset));
 module.exports = router;
