@@ -2,13 +2,7 @@ const Post = require('../models/post');
 const mbxGeocoding=require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken= process.env.MAPBOX_TOKEN;
 const geocodingClient= mbxGeocoding({accessToken: process.env.MAPBOX_TOKEN});
-const cloudinary= require('cloudinary');
 
-cloudinary.config({
-  cloud_name: 'cloudforproject',
-  api_key:'969674229555917',
-  api_secret: process.env.CLOUDINARY_SECRET
-});
 
 module.exports = {
 	// Posts Index
@@ -29,10 +23,9 @@ module.exports = {
 	async postCreate(req, res, next) {
 		req.body.post.images = [];
     for(const file of req.files) {
-    	let image = await cloudinary.v2.uploader.upload(file.path);
     	req.body.post.images.push({
-    		url: image.secure_url,
-    		public_id: image.public_id
+    		url: file.path,
+    		public_id: file.filename
     	});
     }
 		let response = await geocodingClient
@@ -75,12 +68,12 @@ module.exports = {
 			// assign deleteImages from req.body to its own variable
 			let deleteImages = req.body.deleteImages;
 			// loop over deleteImages
-			for(const public_id of deleteImages) {
+			for(const filename of deleteImages) {
 				// delete images from cloudinary
-				await cloudinary.v2.uploader.destroy(public_id);
+				await cloudinary.v2.uploader.destroy(filename);
 				// delete image from post.images
 				for(const image of post.images) {
-					if(image.public_id === public_id) {
+					if(image.public_id === filename) {
 						let index = post.images.indexOf(image);
 						post.images.splice(index, 1);
 					}
@@ -91,10 +84,9 @@ module.exports = {
 		if(req.files) {
 			// upload images
       for(const file of req.files) {
-      	let image = await cloudinary.v2.uploader.upload(file.path);
       	req.body.post.images.push({
-      		url: image.secure_url,
-      		public_id: image.public_id
+      		url: file.path,
+      		public_id: file.filename
       	});
       }
 		}
