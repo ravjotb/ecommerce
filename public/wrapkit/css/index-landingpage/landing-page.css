@@ -43,7 +43,7 @@ Static slide 10
     font-size: 70px;
     line-height: 100px; }
   .static-slider-head .subtitle {
-    color: #ffffff;
+    color: #8d97ad;
     line-height: 30px; }
 
 /*******************
@@ -55,10 +55,10 @@ Header 1
     margin: 0 20px; }
     .h1-nav .navbar-nav .nav-item .nav-link {
       padding: 12px 0px;
-      color: #8d97ad;
+      color: #c9b45c;
       font-weight: 400; }
       .h1-nav .navbar-nav .nav-item .nav-link:hover {
-        color: #2cdd9b; }
+        color: #c9b45c; }
     .h1-nav .navbar-nav .nav-item:last-child {
       margin-right: 0px; }
 
@@ -90,7 +90,8 @@ Static slide 10
     text-transform: uppercase;
     font-weight: 700;
     font-size: 48px;
-    line-height: 50px; }
+    line-height: 50px;
+    margin-top: 50px;}
   .static-slider10 .subtitle {
     color: #ffffff; }
 

@@ -13,7 +13,8 @@ const { postIndex,
         postShow,
         postEdit,
         postUpdate,
-        postDestroy }= require('../controllers/posts');
+        postDestroy,
+        postPurchase }= require('../controllers/posts');
 
 /* GET posts index /posts */
 router.get('/', asyncErrorHandler(searchAndFilterPosts), asyncErrorHandler(postIndex));
@@ -27,6 +28,9 @@ router.post('/', isLoggedIn, upload.array('images', 4), asyncErrorHandler(postCr
 /* GET posts show /posts/:id */
 router.get('/:id', asyncErrorHandler(postShow));
 
+// GET posts purchase /posts/:id/purchase
+router.get('/:id/purchase', isLoggedIn, postPurchase);
+
 /* GET posts edit /posts/:id/edit */
 router.get('/:id/edit', isLoggedIn, asyncErrorHandler(isAuthor), postEdit);
 
@@ -35,5 +39,6 @@ router.put('/:id', isLoggedIn, asyncErrorHandler(isAuthor), upload.array('images
 
 /* DELETE posts destroy /posts/:id */
 router.delete('/:id', isLoggedIn, asyncErrorHandler(isAuthor), (postDestroy));
+
 
 module.exports = router;

@@ -1,7 +1,7 @@
 <% layout('layouts/post-show-layout') -%>
 <script src="https://kit.fontawesome.com/afb8d82910.js" crossorigin="anonymous"></script>
 <h1><%= post.title %></h1>
-<div>Price: <%= post.price %></div>
+<div>Price: $<%= post.price %></div>
 <div><%= post.description %></div>
 <div><%= post.location %></div>
 <div>
@@ -39,7 +39,6 @@
 		</form>
 	</div>
 <%}%>
-
 <% if(currentUser) {%>
 	<h2>Create a Review</h2>
 	<form action="/posts/<%= post.id %>/reviews" method="POST">
@@ -65,6 +64,8 @@
 <%} else {%>
 	<h2><a href="/login?returnTo=true">Create a Review</a></h2>
 <%}%>
+<button type="button" id="purchase" name="purchase" onclick="document.location.href='/posts/<%=post.id%>/purchase'">Purchase</button>
+
 <h3>Reviews</h3>
 <!-- display all reviews -->
 <% post.reviews.forEach(function(review) { %>

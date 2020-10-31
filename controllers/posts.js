@@ -58,12 +58,26 @@ module.exports = {
 			}
 		});
     //const floorRating= post.calculateAvgRating();
-		const floorRating= post.avgRating;
-		res.render('posts/show', { post, floorRating, mapBoxToken });
+		if(post){
+			const floorRating= post.avgRating;
+			res.render('posts/show', { post, floorRating, mapBoxToken });
+		}
 	},
 	// Posts Edit
 	postEdit(req, res, next) {
 		res.render('posts/edit');
+	},
+
+	async postPurchase(req, res, next){
+		let post = await Post.findById(req.params.id).populate({
+			path: 'reviews',
+			options: { sort: { '_id': -1 } },
+			populate: {
+				path: 'author',
+				model: 'User'
+			}
+		});
+		res.render(`posts/purchase`, {post});
 	},
 	// Posts Update
 	async postUpdate(req, res, next) {
